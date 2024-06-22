@@ -4,7 +4,9 @@ import React from "react";
  * 
  * @returns the page containing the data logic and display
  */
-export default function DataPage() {
+export default function TransactionRow(
+
+) {
     return (
             <div className="containter px-5 mx-5">
                 <div className="text-start fs-1 pb-2">Transactions</div>
