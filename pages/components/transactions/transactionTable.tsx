@@ -1,3 +1,6 @@
+import { Transaction } from '../../types/Transaction';
+import TransactionRow from './transactionRow';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,22 +10,37 @@ import Col from 'react-bootstrap/Col';
  * @returns the page containing the data logic and display
  */
 export default function TransactionTable({
-    filePath
+    transactions
 }: {
-    filePath: string
+    transactions: Transaction[]
 }) {
-    console.log(filePath)
+    console.log(transactions)
+    console.log("trying to create transaction rows")
+
+    var rows = []
+
+    transactions.forEach(
+        (transaction, i) => {   
+            rows.push(<TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>)
+        }
+    )
+
+    // var rows = transactions.map((transaction,i) => (
+    //     <TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>
+    // ))
+    
+    console.log(rows)
 
     return (
         <Container>
             <Row>
-                <Col className="border">
-                    1 of 2
-                </Col>
-                <Col className="border">
-                    2 of 2
-                </Col>
+                <Col className="border py-1">Date</Col>
+                <Col className="border py-1">Account</Col>
+                <Col className="border py-1" xs={6}>Description</Col>
+                <Col className="border py-1">Credit</Col>
+                <Col className="border py-1">Debit</Col>
             </Row>
+            {rows}  
         </Container>
 
     )

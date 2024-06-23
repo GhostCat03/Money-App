@@ -1,4 +1,6 @@
 import React from "react";
+import { useFilePicker } from 'use-file-picker';
+import { Button } from "react-bootstrap";
 
 import TransactionTable from "../components/transactions/transactionTable";
 import { Transaction } from "../types/Transaction";
@@ -12,6 +14,28 @@ import { Transaction } from "../types/Transaction";
  * @returns the page containing the data logic and display
  */
 export default function DataPage({ fileName }: { fileName: string }) {
+
+  const { openFilePicker, filesContent, loading } = useFilePicker({
+    accept: '.csv',
+  });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // return (
+  //   <div>
+  //     <Button variant="secondary" onClick={() => openFilePicker()}>Select File</Button>
+  //     <br />
+  //     {filesContent.map((file, index) => (
+  //       <div>
+  //         <h2>{file.name}</h2>
+  //         <div key={index}>{file.content}</div>
+  //         <br />
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
 
   // converts a string to a date object
   const parseDate = (dateString: string): Date => {
@@ -32,29 +56,27 @@ export default function DataPage({ fileName }: { fileName: string }) {
     debit: data[4] ? parseFloat(data[4]) : 0,
   } as Transaction)
 
-  // constructs the file path
-  const filePath = "./data/raw/" + fileName;
-  let data: Transaction[] = []
+  const parseCSV = (fileContent: string): Transaction[] => {
+    var data: Transaction[] = []
+    fileContent.split("\r\n").forEach((line, index) => {
+          if (index > 0) {
+            data.push(createTransaction(line.split(',')))
+          }
+        })
+    return data
+  }
+  
+  console.log(filesContent)
 
-  // fetches the data and transforms it to Transaction structs.
-  fetch(filePath).then(response => response.text())
-  .then(text => {
-    var lines = text.split("\r\n");
-    lines.forEach((line, index) => {
-      if (index > 0) {
-        data.push(createTransaction(line.split(',')))
-      }
-    })
-  })
 
-  console.log(data)
 
   return (
     <div className="containter px-5 mx-5">
-      <div className="text-start fs-1 pb-2">
-        Transactions <span className="fs-4"> - {fileName}</span>
+      <div className="text-start fs-1 mb-3 border-bottom border-2">
+        Transactions {filesContent.length > 0 && <span className="fs-4"> - {filesContent[0].name}</span>}
       </div>
-      <TransactionTable filePath={filePath} />
+      {filesContent.length == 0 && <Button variant="secondary" onClick={() => openFilePicker()}>Select File</Button>}
+      {filesContent.length > 0 && <TransactionTable transactions={parseCSV(filesContent[0].content)} />}
     </div>
   );
 }

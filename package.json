@@ -10,7 +10,8 @@
     "next": "latest",
     "react": "18.2.0",
     "react-bootstrap": "^2.10.3",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "use-file-picker": "^2.1.2"
   },
   "engines": {
     "node": ">=18"
