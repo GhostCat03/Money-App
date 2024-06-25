@@ -14,22 +14,9 @@ export default function TransactionTable({
 }: {
     transactions: Transaction[]
 }) {
-    console.log(transactions)
-    console.log("trying to create transaction rows")
-
-    var rows = []
-
-    transactions.forEach(
-        (transaction, i) => {   
-            rows.push(<TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>)
-        }
-    )
-
-    // var rows = transactions.map((transaction,i) => (
-    //     <TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>
-    // ))
-    
-    console.log(rows)
+    const rows = transactions.map((transaction,i) => (
+        <TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>
+    ));
 
     return (
         <Container>
@@ -42,6 +29,5 @@ export default function TransactionTable({
             </Row>
             {rows}  
         </Container>
-
     )
 }

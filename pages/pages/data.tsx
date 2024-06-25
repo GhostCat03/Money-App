@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useFilePicker } from 'use-file-picker';
 import { Button } from "react-bootstrap";
 
@@ -19,25 +19,23 @@ export default function DataPage({ fileName }: { fileName: string }) {
     accept: '.csv',
   });
 
+  const [appState, setAppState] = useState<Transaction[]>([]);
+  
+  useEffect(() => {
+    // Side effect whenever filesContent changes
+    if (filesContent.length === 0)
+      return;
+    
+    console.log("files content changed")
+    setAppState(parseCSV(filesContent[0].content));
+  }, [filesContent]);
+
+  // Exit early if loading data
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // return (
-  //   <div>
-  //     <Button variant="secondary" onClick={() => openFilePicker()}>Select File</Button>
-  //     <br />
-  //     {filesContent.map((file, index) => (
-  //       <div>
-  //         <h2>{file.name}</h2>
-  //         <div key={index}>{file.content}</div>
-  //         <br />
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-
-  // converts a string to a date object
+  /** converts a string to a date object */
   const parseDate = (dateString: string): Date => {
     const splitData = dateString.split('/')
     return new Date(
@@ -47,7 +45,7 @@ export default function DataPage({ fileName }: { fileName: string }) {
     )
   }
 
-  // creates a transaction struct from a split csv
+  /** creates a transaction struct from a split csv */
   const createTransaction = (data: string[]): Transaction => ({
     date: parseDate(data[0]),
     account: data[1],
@@ -56,6 +54,7 @@ export default function DataPage({ fileName }: { fileName: string }) {
     debit: data[4] ? parseFloat(data[4]) : 0,
   } as Transaction)
 
+  /** parses a CSV string and maps each line to a Transaction */
   const parseCSV = (fileContent: string): Transaction[] => {
     var data: Transaction[] = []
     fileContent.split("\r\n").forEach((line, index) => {
@@ -65,10 +64,6 @@ export default function DataPage({ fileName }: { fileName: string }) {
         })
     return data
   }
-  
-  console.log(filesContent)
-
-
 
   return (
     <div className="containter px-5 mx-5">
@@ -76,7 +71,16 @@ export default function DataPage({ fileName }: { fileName: string }) {
         Transactions {filesContent.length > 0 && <span className="fs-4"> - {filesContent[0].name}</span>}
       </div>
       {filesContent.length == 0 && <Button variant="secondary" onClick={() => openFilePicker()}>Select File</Button>}
-      {filesContent.length > 0 && <TransactionTable transactions={parseCSV(filesContent[0].content)} />}
+      {appState.length > 0 && <TransactionTable transactions={appState} />}
+      <Button onClick={() => {
+        setAppState([...appState, { 
+          date: new Date(),
+          account: "idk",
+          description: "made up stuff",
+          credit: 1,
+          debit: 0 }
+        ]);
+      }}>Update state</Button>
     </div>
   );
 }
