@@ -14,22 +14,9 @@ export default function TransactionTable({
 }: {
     transactions: Transaction[]
 }) {
-    console.log(transactions)
-    console.log("trying to create transaction rows")
-
-    var rows = []
-
-    transactions.forEach(
-        (transaction, i) => {   
-            rows.push(<TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>)
-        }
-    )
-
-    // var rows = transactions.map((transaction,i) => (
-    //     <TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>
-    // ))
-    
-    console.log(rows)
+    const rows = transactions.map((transaction,i) => (
+        <TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>
+    ));
 
     return (
         <Container>
@@ -39,9 +26,17 @@ export default function TransactionTable({
                 <Col className="border py-1" xs={6}>Description</Col>
                 <Col className="border py-1">Credit</Col>
                 <Col className="border py-1">Debit</Col>
+                <Col className="border py-1">Category</Col>
             </Row>
             {rows}  
+            <Row>
+                <Col className="py-1"></Col>
+                <Col className="py-1"></Col>
+                <Col className="border py-1" xs={6}>Total</Col>
+                <Col className="border py-1">{transactions.reduce((ac: number, trans: Transaction) => ac + trans.credit, 0)}</Col>
+                <Col className="border py-1">{transactions.reduce((ac: number, trans: Transaction) => ac + trans.debit, 0)}</Col>
+                <Col className="py-1"></Col>
+            </Row>
         </Container>
-
     )
 }

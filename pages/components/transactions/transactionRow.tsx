@@ -20,6 +20,7 @@ export default function TransactionRow({
             <Col className="border py-1 text-truncate" xs={6}>{transaction.description}</Col>
             <Col className="border py-1">{transaction.credit ? transaction.credit.toFixed(2).toString() : ""}</Col>
             <Col className="border py-1">{transaction.debit ? transaction.debit.toFixed(2).toString() : ""}</Col>
+            <Col className="border py-1">{transaction.category}</Col>
         </Row>
     )
 }

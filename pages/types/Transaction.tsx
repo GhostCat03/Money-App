@@ -5,4 +5,5 @@ export type Transaction = {
   description: string;
   credit: number;
   debit: number;
+  category: string | undefined;
 }
