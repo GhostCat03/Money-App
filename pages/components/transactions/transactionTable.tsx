@@ -26,8 +26,17 @@ export default function TransactionTable({
                 <Col className="border py-1" xs={6}>Description</Col>
                 <Col className="border py-1">Credit</Col>
                 <Col className="border py-1">Debit</Col>
+                <Col className="border py-1">Category</Col>
             </Row>
             {rows}  
+            <Row>
+                <Col className="py-1"></Col>
+                <Col className="py-1"></Col>
+                <Col className="border py-1" xs={6}>Total</Col>
+                <Col className="border py-1">{transactions.reduce((ac: number, trans: Transaction) => ac + trans.credit, 0)}</Col>
+                <Col className="border py-1">{transactions.reduce((ac: number, trans: Transaction) => ac + trans.debit, 0)}</Col>
+                <Col className="py-1"></Col>
+            </Row>
         </Container>
     )
 }
