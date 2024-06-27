@@ -1,15 +1,13 @@
 import Layout from "../components/layout.tsx"
-import DataPage from "./data.tsx"
+import DataPage from "./display-transactions.tsx"
 
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "../styles/globals.css";
+// import "../styles/global.css";
 
 export default function Home() {
   return (
     <div className="App">
-      <Layout page="Data">
-        <DataPage fileName="testTransactions.csv"/>
-      </Layout>
+      <DataPage fileName="testTransactions.csv"/>
     </div>
   );
 }

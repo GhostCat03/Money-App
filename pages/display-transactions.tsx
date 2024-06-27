@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useFilePicker } from 'use-file-picker';
 import { Button } from "react-bootstrap";
 
 import TransactionTable from "../components/transactions/transactionTable";
 import { Transaction } from "../types/Transaction";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import Layout from "../components/layout";
 
 // import csv from "./testTransaction.csv"
 // import { parse } from "csv-parse";
@@ -102,7 +104,8 @@ export default function DataPage({ fileName }: { fileName: string }) {
   // {filesContent.length == 0 && <Button variant="secondary" onClick={() => openFilePicker()}>Select File</Button>}
   
   return (
-    <div className="containter px-5 mx-5">
+  
+    <Layout page="transactions">
       <div className="text-start fs-1 mb-3 border-bottom border-2">
         Transactions <span className="fs-4"> - {fileName}</span>
       </div>
@@ -117,6 +120,6 @@ export default function DataPage({ fileName }: { fileName: string }) {
         category: undefined}
         ]);
       }}>Update state</Button>
-    </div>
+    </Layout>
   );
 }
