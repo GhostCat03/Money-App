@@ -10,9 +10,11 @@ import Col from 'react-bootstrap/Col';
  * @returns the page containing the data logic and display
  */
 export default function TransactionTable({
-    transactions
+    transactions,
+    includeTotals
 }: {
-    transactions: Transaction[]
+    transactions: Transaction[],
+    includeTotals: boolean
 }) {
     const rows = transactions.map((transaction,i) => (
         <TransactionRow key={"transactionRow-" + i.toString()} transaction={transaction}/>
@@ -29,14 +31,14 @@ export default function TransactionTable({
                 <Col className="border py-1">Category</Col>
             </Row>
             {rows}  
-            <Row>
+            {includeTotals && (<Row>
                 <Col className="py-1"></Col>
                 <Col className="py-1"></Col>
                 <Col className="border py-1" xs={6}>Total</Col>
                 <Col className="border py-1">{transactions.reduce((ac: number, trans: Transaction) => ac + trans.credit, 0)}</Col>
                 <Col className="border py-1">{transactions.reduce((ac: number, trans: Transaction) => ac + trans.debit, 0)}</Col>
                 <Col className="py-1"></Col>
-            </Row>
+            </Row>)}
         </Container>
     )
 }
