@@ -34,3 +34,14 @@ export function setStoredAppData(t: Transaction[]) {
   // Save data whenever changed
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(t))
 }
+
+/**
+ * Updates an item within the stored app data 
+ * @param i index of item to update
+ * @param t transactions to store at index
+ */
+export function updateStoredItem(i: number, t: Transaction) {
+  const data = getStoredAppData()
+
+  setStoredAppData([...data.slice(0, i), t, ...data.slice(i+1)])
+}
