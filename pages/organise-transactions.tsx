@@ -16,7 +16,7 @@ interface IndexTransaction {
   transaction: Transaction
 }
 
-export default function DataPage() {
+export default function OrganiseDataPage() {
 
   const [unorganisedData, setUnorganisedData] = useState<IndexTransaction[] | undefined>();
   // const [organisedData, setOrganisedData] = useState<Transaction[] | undefined>();
@@ -47,7 +47,8 @@ export default function DataPage() {
   }
 
   const generateCategoryButtons = (isActive: boolean) => CATEGORIES
-    .map(v => <Col className="d-grid">
+    .map(v => 
+      <Col className="d-grid">
         <Button onClick={handleCategoryButton(v)} variant="dark" className={isActive ? "" : "disabled"}>{v}</Button>
       </Col>
     )

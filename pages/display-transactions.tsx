@@ -43,9 +43,9 @@ export default function DataPage({ fileName }: { fileName: string }) {
     }
   }, [fileName]);
 
-  useEffect(() => {
-    setStoredAppData(appState)
-  }, [appState]);
+  // useEffect(() => {
+  //   setStoredAppData(appState)
+  // }, [appState]);
 
   // Exit early if loading data
   if (loading) {
@@ -58,16 +58,6 @@ export default function DataPage({ fileName }: { fileName: string }) {
         Transactions <span className="fs-4"> - {fileName}</span>
       </div>
       {appState.length > 0 && <TransactionTable transactions={appState} includeTotals={true}/>}
-      {/* <Button onClick={() => {
-        setAppState([...appState, { 
-          date: new Date(),
-          account: "idk",
-          description: "made up stuff",
-          credit: 1,
-          debit: 0,
-        category: undefined}
-        ]);
-      }}>Update state</Button> */}
     </Layout>
   );
 }
