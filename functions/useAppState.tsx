@@ -21,14 +21,15 @@ export default function useAppState(filePath?: string) {
 
     if (lsData) {
       setAppState(lsData);
+      setStoredAppData(lsData)
       setIsLoading(false)
       return;
     }
 
     if (!filePath) {
-      // setError(new Error)
       setIsLoading(false)
       setError("There is no local storage and no file path has been provided")
+      return 
     }
 
     // Otherwise populate the data from the csv
@@ -37,13 +38,19 @@ export default function useAppState(filePath?: string) {
     // Gets data from the file when the app is first opened
     fetch(filePath)
       .then(res => {
-        console.log(res)
+        if (!res.ok) {
+          setError("error reading file")
+          console.log(res)
+        }
         return res.text()
       })
       .then(text => {
-        if (isValid)
-          setAppState(parseCSV(text));
+        if (isValid) {
+          const parsedData = parseCSV(text)
+          setAppState(parsedData)
+          setStoredAppData(parsedData)
           setIsLoading(false)
+        }
       })
       .catch(err => {
         setIsLoading(false)
@@ -64,7 +71,7 @@ export default function useAppState(filePath?: string) {
     const lsData = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (!lsData) {
-      return []
+      return null
     }
 
     // Existing local data
@@ -89,19 +96,8 @@ export default function useAppState(filePath?: string) {
 
     // Save data whenever changed
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(t))
+    setAppState(t)
   }
-
-  // /**
-  //  * Updates an item within the stored app data 
-  //  * @param i index of item to update
-  //  * @param t transactions to store at index
-  //  */
-  // function updateStoredItem(i: number, t: Transaction) {
-  //   const data = getStoredAppData()
-
-  //   setStoredAppData([...data.slice(0, i), t, ...data.slice(i+1)])
-  // }
-
 
   return {appState, setStoredAppData, isLoading, error}
 }
