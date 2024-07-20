@@ -25,12 +25,12 @@ export default function Layout({
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Item>
-              <Nav.Link href="/display-transactions" active={page == "transactions"}>
+              <Nav.Link href="/display-transactions" active={page === "transactions"}>
                 Transactions
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/organise-transactions" active={page == "organise"}>
+              <Nav.Link href="/organise-transactions" active={page === "organise"}>
                 Organise
               </Nav.Link>
             </Nav.Item>

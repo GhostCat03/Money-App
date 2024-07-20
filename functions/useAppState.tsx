@@ -1,9 +1,109 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Transaction } from "../types/Transaction";
+import Error from "next/error";
+import { parseCSV } from "./parseCSV";
 
-export default function useAppState() {
-  const [appState, setAppState] = useState<Transaction[] | undefined>();
+const LOCAL_STORAGE_KEY = "app-data"
 
+/**
+ * a custom hook to store data in local storage
+ * @param filePath the path to the default data
+ * @returns [appState, setAppState, isLoading, error]
+ */
+export default function useAppState(filePath?: string) {
+  const [appState, setAppState] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string>(null)
+
+  // Loads data upon first page rends
+  useEffect(() => {
+    const lsData = getStoredAppData()
+
+    if (lsData) {
+      setAppState(lsData);
+      setIsLoading(false)
+      return;
+    }
+
+    if (!filePath) {
+      // setError(new Error)
+      setIsLoading(false)
+      setError("There is no local storage and no file path has been provided")
+    }
+
+    // Otherwise populate the data from the csv
+    let isValid = true;
+
+    // Gets data from the file when the app is first opened
+    fetch(filePath)
+      .then(res => {
+        console.log(res)
+        return res.text()
+      })
+      .then(text => {
+        if (isValid)
+          setAppState(parseCSV(text));
+          setIsLoading(false)
+      })
+      .catch(err => {
+        setIsLoading(false)
+        setError(err.message)
+      })
+
+    // Cleanup whenever this is meant to be called again
+    return () => {
+      isValid = false;
+    }
+  }, []);
+
+  /**
+   * gets all the app data stored within local storage 
+   * @returns an array of transactions
+   */
+  function getStoredAppData(): Transaction[] {
+    const lsData = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+    if (!lsData) {
+      return []
+    }
+
+    // Existing local data
+    const naiveData = JSON.parse(lsData) as Transaction[];
+    
+    // reconstruct the date objects from strings
+    const data = naiveData.map((item) => ({
+      ...item,
+      date: new Date(item.date)
+    }))
+
+    return data;
+  }
+
+  /**
+   * stores the provided array in local storage
+   * @param t an array of transactions to set as the stored app data
+   */
+  function setStoredAppData(t: Transaction[]) {
+    if (!t)
+      return;
+
+    // Save data whenever changed
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(t))
+  }
+
+  // /**
+  //  * Updates an item within the stored app data 
+  //  * @param i index of item to update
+  //  * @param t transactions to store at index
+  //  */
+  // function updateStoredItem(i: number, t: Transaction) {
+  //   const data = getStoredAppData()
+
+  //   setStoredAppData([...data.slice(0, i), t, ...data.slice(i+1)])
+  // }
+
+
+  return {appState, setStoredAppData, isLoading, error}
 }
 
 

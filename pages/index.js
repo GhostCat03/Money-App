@@ -1,5 +1,6 @@
 import Layout from "../components/layout.tsx"
 import DataPage from "./display-transactions.tsx"
+import CategoriseDataPage from "./organise-transactions.tsx"
 
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "../styles/global.css";
@@ -11,3 +12,4 @@ export default function Home() {
     </div>
   );
 }
+
