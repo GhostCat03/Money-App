@@ -34,6 +34,11 @@ export default function Layout({
                 Organise
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="/statistics" active={page === "stats"}>
+                Stats
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
