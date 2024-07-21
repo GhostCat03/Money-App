@@ -8,8 +8,7 @@ import { Transaction } from "../types/Transaction";
 import Layout from "../components/layout";
 import TransactionTable from "../components/transactions/transactionTable";
 import useAppState from "../functions/useAppState";
-
-const CATEGORIES = ["Income", "Interest", "Shopping", "Food", "Car", "Entertainment", "Personal"]
+import { CATEGORIES } from "../types/Categories";
 
 interface IndexTransaction {
   index: number,
