@@ -17,7 +17,7 @@ const FILE_PATH = "./data/raw/testTransactions.csv"
  */
 export default function DataPage() {
 
-  const {appState, setStoredAppData: setAppState, isLoading, error} = useAppState(FILE_PATH)
+  const {appState, setAppState, isLoading, error} = useAppState(FILE_PATH)
   
   return (
     <Layout page="transactions">

@@ -18,7 +18,7 @@ interface IndexTransaction {
 
 export default function CategoriseDataPage() {
 
-  const {appState, setStoredAppData: setAppState, isLoading, error} = useAppState()
+  const {appState, setAppState, isLoading, error} = useAppState()
 
   const getFirstUnorganised = (t: Transaction[]) => {
     const unorganisedData = t
@@ -66,8 +66,9 @@ export default function CategoriseDataPage() {
       <div className="text-start fs-1 mb-3 border-bottom border-2">
         To categorise:
       </div>
+      { error && <div>{error}</div> }
       {isLoading && <div>Loading ...</div>}
-      {!isLoading && generateBody(getFirstUnorganised(appState))}
+      {!isLoading && !error && generateBody(getFirstUnorganised(appState))}
     </Layout>
   )
 }

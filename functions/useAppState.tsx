@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Transaction } from "../types/Transaction";
-import Error from "next/error";
 import { parseCSV } from "./parseCSV";
 
 const LOCAL_STORAGE_KEY = "app-data"
@@ -19,13 +18,14 @@ export default function useAppState(filePath?: string) {
   useEffect(() => {
     const lsData = getStoredAppData()
 
+    // return data if it is already there
     if (lsData) {
       setAppState(lsData);
-      setStoredAppData(lsData)
       setIsLoading(false)
       return;
     }
 
+    // set error if there is no file path
     if (!filePath) {
       setIsLoading(false)
       setError("There is no local storage and no file path has been provided")
@@ -48,7 +48,6 @@ export default function useAppState(filePath?: string) {
         if (isValid) {
           const parsedData = parseCSV(text)
           setAppState(parsedData)
-          setStoredAppData(parsedData)
           setIsLoading(false)
         }
       })
@@ -63,11 +62,19 @@ export default function useAppState(filePath?: string) {
     }
   }, []);
 
+  // everytime appState changes we set it in local storage
+  useEffect(() => {
+    if (!appState) {
+      return
+    }
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(appState))
+  }, [appState])
+
   /**
    * gets all the app data stored within local storage 
    * @returns an array of transactions
    */
-  function getStoredAppData(): Transaction[] {
+  const getStoredAppData = useCallback((): Transaction[] => {
     const lsData = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (!lsData) {
@@ -84,22 +91,9 @@ export default function useAppState(filePath?: string) {
     }))
 
     return data;
-  }
+  }, []);
 
-  /**
-   * stores the provided array in local storage
-   * @param t an array of transactions to set as the stored app data
-   */
-  function setStoredAppData(t: Transaction[]) {
-    if (!t)
-      return;
-
-    // Save data whenever changed
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(t))
-    setAppState(t)
-  }
-
-  return {appState, setStoredAppData, isLoading, error}
+  return {appState, setAppState, isLoading, error}
 }
 
 
