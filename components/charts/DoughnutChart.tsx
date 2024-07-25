@@ -1,9 +1,9 @@
-// src/components/PieChart.js
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { ChartData } from "../../types/ChartData";
 
+// Doughnut chart with custom configurations
 export default function DoughnutChart({
   chartData,
   title,

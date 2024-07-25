@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 /**
- * 
+ * Component for a table of transactions
  * @returns the page containing the data logic and display
  */
 export default function TransactionTable({

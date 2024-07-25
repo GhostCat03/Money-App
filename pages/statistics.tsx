@@ -14,18 +14,10 @@ import { CATEGORIES, IN_CATEGORIES, OUT_CATEGORIES } from "../types/Categories";
 // This is cursed, but is the officially documented way of doing things for my chart library.
 Chart.register(CategoryScale);
 
+// Page for displaying various statistics about the transactions
 export default function StatisticsPage() {
 
   const {appState, setAppState, isLoading, error} = useAppState()
-
-  const data = {
-    labels: ["A", "B"],
-    datasets: [{
-      label: "jfgd",
-      data: [338, 55],
-    }]
-  } as ChartData;
-
 
   // map app state to chart data for in/out spending
   const inData = appState.filter(

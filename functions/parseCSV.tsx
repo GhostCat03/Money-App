@@ -1,5 +1,7 @@
 import { Transaction } from "../types/Transaction"
 
+// parses a CSV and returns a list of transactions
+// assumes CSV is formatted correctly
 export function parseCSV (fileContent: string): Transaction[] {
 
   /** converts a string to a date object */

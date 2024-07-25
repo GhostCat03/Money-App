@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-
+import React from "react";
 import TransactionTable from "../components/transactions/transactionTable";
-import { Transaction } from "../types/Transaction";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "../components/layout";
 
 import useAppState from "../functions/useAppState";
 
+// TODO create a file picker where the user can upload their own file.
 const FILE_PATH = "./data/raw/testTransactions.csv"
 
 /**
- *
+ * Display data page
  * @returns the page containing the data logic and display
  */
 export default function DataPage() {

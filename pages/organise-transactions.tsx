@@ -15,6 +15,7 @@ interface IndexTransaction {
   transaction: Transaction
 }
 
+// page for categorising the transactions
 export default function CategoriseDataPage() {
 
   const {appState, setAppState, isLoading, error} = useAppState()
@@ -46,7 +47,6 @@ export default function CategoriseDataPage() {
       </div>
     )
   }
-
 
   const handleCategoryButton = (category: string, unorganisedData: IndexTransaction) => () => {
     const {index: i, transaction: t} = unorganisedData

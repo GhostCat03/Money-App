@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 /**
- * 
+ * A row of the Transaction Table 
  * @returns the page containing the data logic and display
  */
 export default function TransactionRow({
