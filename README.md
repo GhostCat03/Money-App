@@ -11,3 +11,4 @@ npm run dev
 [x] Statisitics Page
 [] File picker
 [] Save categorised transactions
+[] Display transactions by month
